@@ -1,0 +1,6 @@
+{
+  "ambientDependencies": {
+    "lokijs": "registry:dt/lokijs#0.0.0+20160316042322",
+    "node": "registry:dt/node#4.0.0+20160316042000"
+  }
+}
