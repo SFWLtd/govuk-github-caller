@@ -6,7 +6,7 @@ import * as sr from "./server";
 
 console.info("Running");
 
-var minutes = 0.5;
+var minutes = 90;
 var interval = minutes * 60 * 1000;
 
 setInterval(function() {
@@ -14,7 +14,7 @@ setInterval(function() {
     request.query(users);
 }, interval);
 
-const port: number = 3000;
+const port: number = process.env.PORT;
 
 
 var server = http.createServer(sr.onRequest);
