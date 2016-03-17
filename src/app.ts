@@ -14,7 +14,7 @@ setInterval(function() {
     request.query(users);
 }, interval);
 
-const port: number = process.env.PORT;
+const port: number = process.env.PORT || 3000;
 
 
 var server = http.createServer(sr.onRequest);

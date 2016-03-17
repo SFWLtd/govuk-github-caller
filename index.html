@@ -20,6 +20,10 @@
             border-radius: 25px;
             overflow: hidden;
             text-align: center;
+            cursor: pointer;
+        }
+        .result:hover{
+            box-shadow: 0px 0px 30px #298; 
         }
     </style>
 </head>
@@ -43,7 +47,7 @@
                     return;
                 }
                 
-                var size = Math.ceil((data / 5) * 30);
+                var size = Math.ceil((data / 5) * 25) + 25;
                 var dimension = size + "px";
                 var radius = size/2 + "px";
                 
@@ -51,7 +55,8 @@
                 + ";width:" + dimension 
                 + ";height:" + dimension 
                 + ";line-height:" + dimension
-                + "'>"
+                + "' data-count=" + data
+                +" onclick='clickDiv(this)'>"
                 + key + "</div>";
                 
                 $("#data-location").append(div);
@@ -61,6 +66,10 @@
             console.log("error occured " + err);
         });        
     });
+    
+    function clickDiv(d){
+        alert(d.textContent + " has " + d.attributes["data-count"].value + " government repositories");
+    }
 </script>
 
 </html>
