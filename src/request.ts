@@ -1,6 +1,6 @@
 import * as https from "https";
 import * as db from "./database";
-import * as config from "./myconfig";
+import * as config from "./config";
 import * as model from "./model";
 
 var options = {
