@@ -1,22 +1,12 @@
 import * as https from "https";
 import * as db from "./database";
 import * as config from "./myconfig";
+import * as model from "./model";
 
 var options = {
     host: "api.github.com",
     path: "",
     headers: { "user-agent": "eliotjones" }
-}
-
-export interface User {
-    name: string;
-    languages: Language[];
-    etag: string;
-}
-
-export interface Language {
-    language: string;
-    repository: string;
 }
 
 export function query(users: string[]): void {
@@ -41,7 +31,7 @@ function handleRequestError(error: any) {
     console.error(error);
 }
 
-function onResponse(res: any, user: User): void {
+function onResponse(res: any, user: model.User): void {
     res.setEncoding("utf8");
 
     var str = "";
@@ -54,15 +44,17 @@ function onResponse(res: any, user: User): void {
     });
 }
 
-function processResponse(body:string, res: any, user: User): void {
+function processResponse(body:string, res: any, user: model.User): void {
     if (res.statusCode === 304) {
         console.info(`User has no new repositories ${user.name}`);
         return;
     }
     
+    var remaining = res.headers["X-RateLimit-Remaining"];
+    
     if (res.statusCode === 200) {
         var data = JSON.parse(body);
-        user.languages = data.map(function(x: any): Language {
+        user.languages = data.map(function(x: any): model.Language {
             return { language: x.language, repository: x.name };
         })
         user.etag = res.headers["etag"];
@@ -70,7 +62,7 @@ function processResponse(body:string, res: any, user: User): void {
         console.info("Adding or updating user " + user.name);
         db.default.addUser(user);
     }else{
-        console.warn(`Querying user repositories failed for the user ${user.name}`)
+        console.warn(`Querying user repositories failed for the user ${user.name}. The remaining rate limit is ${remaining}`);
     }
     
 }

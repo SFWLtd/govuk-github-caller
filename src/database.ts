@@ -1,5 +1,5 @@
 import * as loki from "lokijs";
-import * as model from "./request";
+import * as model from "./model";
 
 export class Database {
     private db: Loki;
