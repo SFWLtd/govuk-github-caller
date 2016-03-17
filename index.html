@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js" integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+    crossorigin="anonymous"></script>
+    <title>UK Government GitHub Languages</title>
+    <style>
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .result{
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            color: #EEE;
+            background-color: #2980b9;
+            display: inline-block;
+            border-radius: 25px;
+            overflow: hidden;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>UK Government GitHub Languages</h1>
+    <div id="data-location"></div>
+</body>
+
+<script>
+    $(function(){
+        $.get("/api").done(function(data){
+            
+            var counts = {};
+            for (var i = 0; i < data.length; i++) {
+                counts[data[i].language] = 1 + (counts[data[i].language] || 0);
+            }
+            
+            $.each(counts, function(key, data){
+                if(key == "null"){
+                    return;
+                }
+                
+                var size = Math.ceil((data / (1 + (data)/10)) * 25);
+                var dimension = size + "px";
+                var radius = size/2 + "px";
+                
+                var div = "<div class='result' style='border-radius:" + radius 
+                + ";width:" + dimension 
+                + ";height:" + dimension 
+                + ";line-height:" + dimension
+                + "'>"
+                + key + "</div>";
+                
+                $("#data-location").append(div);
+            });
+            
+        }).fail(function(err){
+            console.log("error occured " + err);
+        });        
+    });
+</script>
+
+</html>

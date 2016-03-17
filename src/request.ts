@@ -1,6 +1,6 @@
 import * as https from "https";
 import * as db from "./database";
-import * as config from "./config";
+import * as config from "./myconfig";
 
 var options = {
     host: "api.github.com",
