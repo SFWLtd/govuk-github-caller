@@ -30,46 +30,85 @@
 
 <body>
     <h1>UK Government GitHub Languages</h1>
+    <select id="organisation">
+        <option value="-1">-- all --</option>
+    </select>
     <div id="data-location"></div>
 </body>
 
 <script>
+    var app = app || {};
+    app.data = app.data || {};
+    
+    function populateBubbles(data){
+        $("#data-location").empty();
+        
+        var counts = {};
+        for (var i = 0; i < data.length; i++) {
+            counts[data[i].language] = 1 + (counts[data[i].language] || 0);
+        }
+        
+        $.each(counts, function(key, data){
+            if (key == "null") {
+                return;
+            }
+            
+            var size = Math.ceil((data / 5) * 25) + 25;
+            var dimension = size + "px";
+            var radius = size/2 + "px";
+            
+            var div = "<div class='result' style='border-radius:" + radius 
+            + ";width:" + dimension 
+            + ";height:" + dimension 
+            + ";line-height:" + dimension
+            + "' data-count=" + data
+            +" onclick='clickDiv(this)'>"
+            + key + "</div>";
+            
+            $("#data-location").append(div);
+        });
+    }
+    
+    function clickDiv(d){
+        alert(d.textContent + " has " + d.attributes["data-count"].value + " government repositories");
+    }
+    
     $(function(){
         $.get("/api").done(function(data){
             
-            var counts = {};
-            for (var i = 0; i < data.length; i++) {
-                counts[data[i].language] = 1 + (counts[data[i].language] || 0);
-            }
+            app.data = data;
+            var orgs = [];
             
-            $.each(counts, function(key, data){
-                if(key == "null"){
-                    return;
+            data.forEach(function (x) {
+                if (orgs.indexOf(x.user) === -1) {
+                    orgs.push(x.user);
                 }
-                
-                var size = Math.ceil((data / 5) * 25) + 25;
-                var dimension = size + "px";
-                var radius = size/2 + "px";
-                
-                var div = "<div class='result' style='border-radius:" + radius 
-                + ";width:" + dimension 
-                + ";height:" + dimension 
-                + ";line-height:" + dimension
-                + "' data-count=" + data
-                +" onclick='clickDiv(this)'>"
-                + key + "</div>";
-                
-                $("#data-location").append(div);
             });
+            
+            var org = $("#organisation");
+            
+            $.each(orgs, function(key, data) {
+                org.append($("<option />").val(data).text(data));
+            });
+            
+            populateBubbles(data);
             
         }).fail(function(err){
             console.log("error occured " + err);
         });        
     });
     
-    function clickDiv(d){
-        alert(d.textContent + " has " + d.attributes["data-count"].value + " government repositories");
-    }
+    $("#organisation").change(function(e) {
+        var selected = $(this).val();
+        if (selected === "-1") {
+            populateBubbles(app.data);
+        } else {
+            var data = app.data.filter(function(x) {
+                return x.user === selected;
+            });
+            populateBubbles(data);
+        }
+    })
 </script>
 
 </html>
