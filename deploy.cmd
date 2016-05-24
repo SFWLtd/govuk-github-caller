@@ -102,10 +102,10 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
   call :ExecuteCmd !NPM_CMD! install --production
   call :ExecuteCmd !NPM_CMD! install typescript
-  echo Running Typescript compiler
-  call :ExecuteCmd tsc
-  IF !ERRORLEVEL! NEQ 0 goto error
   popd
+  echo Running Typescript compiler
+  tsc
+  IF !ERRORLEVEL! NEQ 0 goto error
 )
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
