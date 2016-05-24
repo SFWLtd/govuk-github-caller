@@ -104,7 +104,7 @@ IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   call :ExecuteCmd !NPM_CMD! install typescript
   popd
   echo Running Typescript compiler
-  tsc
+  call :ExecuteCmd node %DEPLOYMENT_TARGET%\node_modules\typescript\bin\tsc -p "%DEPLOYMENT_TARGET%"
   IF !ERRORLEVEL! NEQ 0 goto error
 )
 
