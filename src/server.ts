@@ -18,7 +18,7 @@ export function onRequest(request: http.IncomingMessage, response: http.ServerRe
         
         response.end();
     } else {
-        var html = fs.readFileSync("index.html").toString()
+        var html = fs.readFileSync("../index.html").toString()
         
         response.writeHead(200, { "content-type": "text/html" });
         
