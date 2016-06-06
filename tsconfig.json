@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "bin",
+        "outDir": "gitcaller",
         "sourceMap": true,
         "target": "es5",
         "module": "commonjs"
@@ -9,6 +9,6 @@
         "node_modules",
         "typings/browser.d.ts",
         "typings/browser",
-        "bin"
+        "gitcaller"
     ]
 }

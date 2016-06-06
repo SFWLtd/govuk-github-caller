@@ -9,6 +9,6 @@
         "url" : "https://github.com/SFWLtd/govuk-github-caller.git"
     },
     "scripts": {
-        "start": "node bin/app.js"
+        "start": "node gitcaller/app.js"
     }
 }
